@@ -1,5 +1,15 @@
 export default {
-	"v5.1.1 - September, 2xth. 2020": {
+	"v5.1.2 - October, xxth. 2020": {
+		"Fixes": [
+			"Show right temporary total value. - DKK",
+			"Improve mobile checking on Firefox, fixing the loading issue. - DKK",
+		],
+		"Changes": [
+			"Improve mission information for several missions. - DKK",
+			"Update FontAwesome. - DKK",
+		],
+	},
+	"v5.1.1 - September, 26th. 2020": {
 		"Changes": [
 			"Change watchlist export to stakeouts. - DKK",
 		],
