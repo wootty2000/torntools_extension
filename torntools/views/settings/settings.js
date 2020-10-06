@@ -245,15 +245,12 @@ function setupChangelog() {
 							for (let _item of grandparent[parent_name][_key]) {
 								let contributor;
 
-								if (_item.includes("- DKK")) {
-									contributor = "dkk";
-									_item = _item.slice(0, _item.indexOf(" - DKK"));
-								} else if (_item.includes("- Mephiles")) {
-									contributor = "mephiles";
-									_item = _item.slice(0, _item.indexOf(" - Mephiles"));
-								} else if (_item.includes("- wootty2000")) {
-									contributor = "wootty2000";
-									_item = _item.slice(0, _item.indexOf(" - wootty2000"));
+								for (let c of ["Mephiles", "DKK", "wootty2000", "finally"]) {
+									if (!_item.includes(`- ${c}`)) continue;
+
+									contributor = c.toLowerCase();
+									_item = _item.slice(0, _item.indexOf(`- ${c}`));
+									break;
 								}
 
 								let _item_div = doc.new({ type: "div", class: `child ${contributor}` });
@@ -313,6 +310,28 @@ function setupPreferences() {
 	preferences.find("#notifications_link input").checked = settings.notifications_link;
 	preferences.find("#clean_flight input").checked = settings.clean_flight;
 	preferences.find("#font_size input").value = settings.font_size.replace(/px/, "");
+
+	// Icon bars
+	for (let key in settings.icon_bars) {
+		let option = preferences.find(`#icon_bars-${key} input`);
+
+		option.checked = settings.icon_bars[key];
+
+		if (!settings.icon_bars.show && key !== "show") option.setAttribute("disabled", true);
+	}
+
+	preferences.find("#icon_bars-show input").addEventListener("click", (event) => {
+		const disableIcon = !event.target.checked;
+
+		for (let key in settings.icon_bars) {
+			if (key === "show") continue;
+
+			let option = preferences.find(`#icon_bars-${key} input`);
+
+			if (disableIcon) option.setAttribute("disabled", true);
+			else option.removeAttribute("disabled");
+		}
+	});
 
 	// Tabs
 	for (let tab in settings.tabs) {
@@ -936,6 +955,11 @@ function savePreferences(preferences, settings, target_list_enabled) {
 	settings.notifications_link = preferences.find("#notifications_link input").checked;
 	settings.clean_flight = preferences.find("#clean_flight input").checked;
 	settings.font_size = preferences.find("#font_size input").value.replace(/px/, "") + "px";
+
+	// Icon bars
+	for (let key in settings.icon_bars) {
+		settings.icon_bars[key] = preferences.find(`#icon_bars-${key} input`).checked;
+	}
 
 	// Tabs
 	for (let tab in settings.tabs) {

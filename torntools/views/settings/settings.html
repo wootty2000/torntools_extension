@@ -52,6 +52,7 @@
                 <div class="contributor mephiles"><span>Mephiles [2087524]</span></div>
                 <div class="contributor dkk"><span>DeKleineKobini [2114440]</span></div>
                 <div class="contributor wootty2000"><span>Wootty2000 [2344687]</span></div>
+                <div class="contributor finally"><span>finally [2060206]</span></div>
             </div>
         </div>
     </div>
@@ -135,6 +136,9 @@
                         <div class="note">(fits more open chats)</div>
                         <div class="option" id="global-find_chat">
                             <input type="checkbox">Display 'find' feature for chatboxes
+                        </div>
+                        <div class="option" id="global-autocomplete_chat">
+                            <input type="checkbox">Enable username auto-complete in chatboxes
                         </div>
                         <div class="option" id="global-block_zalgo">
                             <input type="checkbox">Block Zalgo in chat <span class="new">New!</span>
@@ -241,6 +245,14 @@
                         <div class="option" id="default-calculator">
                             <input type="radio" name="default-tab">Calculator
                         </div>
+
+                        <div class="option heading" id="icon_bars-show"><input type="checkbox">Icon bars</div>
+                        <div class="option" id="icon_bars-energy"><input type="checkbox">Energy</div>
+                        <div class="option" id="icon_bars-nerve"><input type="checkbox">Nerve</div>
+                        <div class="option" id="icon_bars-happy"><input type="checkbox">Happy</div>
+                        <div class="option" id="icon_bars-life"><input type="checkbox">Life</div>
+                        <div class="option" id="icon_bars-chain"><input type="checkbox">Chain</div>
+                        <div class="option" id="icon_bars-travel"><input type="checkbox">Travel</div>
                     </div>
                     <div class="section notifications" name="notifications">
                         <div class="heading">Notification Preferences</div>
@@ -436,8 +448,7 @@
                         </div>
                         <div class="option" id="faction-oc_advanced"><input type="checkbox">Advanced OC view</div>
                         <div class="note tabbed">
-                            (includes TornStats NNB, recommended NNB, auto-open OCs, show available member count -
-                            requires Faction API access)
+                            (includes TornStats NNB, recommended NNB, auto-open OCs, show available member count)
                         </div>
                         <div class="option" id="faction-armory_worth">
                             <input type="checkbox">Display Armory Worth information on Info page
@@ -593,7 +604,7 @@
                             <input type="checkbox">Display how much a Bazaar is worth
                         </div>
                         <div class="option" id="bazaar-max_buy_ignore_cash">
-                            <input type="checkbox">Ignore the cash on hand for max buy in bazaars.
+                            <input type="checkbox">Ignore the cash on hand for max buy in bazaars & shops.
                         </div>
                         <div class="option" id="itemmarket-market_value">
                             Hightlight when an item is <input max="100" min="0" type="number">%
@@ -855,6 +866,7 @@
     <!-- <script src="../changelog.js"></script> -->
     <script src="../../scripts/libs/Chart.min.js"></script>
     <script src="../../scripts/libs/showdown.min.js"></script>
+    <script src="../../scripts/js/essential.js"></script>
     <script src="../../scripts/js/globalClasses.js"></script>
     <script src="../../scripts/js/globalFunctions.js"></script>
     <script src="../../scripts/js/globalDatabase.js"></script>

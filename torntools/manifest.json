@@ -55,10 +55,11 @@
 			],
 			"js": [
 				"scripts/libs/nouislider.js",
+				"scripts/js/essential.js",
+				"scripts/js/globalEntry.js",
 				"scripts/js/globalClasses.js",
 				"scripts/js/globalFunctions.js",
 				"scripts/js/globalDatabase.js",
-				"scripts/js/globalEntry.js",
 				"scripts/js/achievementFunctions.js",
 				"scripts/content/global/ttGlobal.js"
 			],
@@ -89,7 +90,7 @@
 				"scripts/libs/nouislider.css"
 			],
 			"js": [
-				"scripts/libs/nouislider.js",
+				"scripts/js/essential.js",
 				"scripts/js/globalClasses.js",
 				"scripts/js/globalFunctions.js",
 				"scripts/js/globalDatabase.js",
@@ -413,6 +414,30 @@
 			],
 			"js": [
 				"scripts/content/search/ttSearch.js"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://www.torn.com/pmarket.php*"
+			],
+			"css": [
+				"scripts/content/achievements/ttAchievements.css"
+			],
+			"js": [
+				"scripts/content/achievements/ttPointsMarketAchievements.js"
+			],
+			"run_at": "document_end"
+		},
+		{
+			"matches": [
+				"https://www.torn.com/points.php*"
+			],
+			"css": [
+				"scripts/content/achievements/ttAchievements.css"
+			],
+			"js": [
+				"scripts/content/achievements/ttPointsAchievements.js"
 			],
 			"run_at": "document_end"
 		},

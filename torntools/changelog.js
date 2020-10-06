@@ -1,5 +1,27 @@
 export default {
-	"v5.1.2 - October, xxth. 2020": {
+	"v5.2 - xxxxxxx, xxth. 2020": {
+		"Features": [
+			"Auto-complete usernames in chat. - finally",
+			"Show bars in the icon. - finally",
+		],
+		"Fixes": [
+			"Properly display item values for weapons and other single items. - DKK",
+			"Fix chain notifications going out too early. - DKK",
+			"Fix icon margin on dynamic change. - finally",
+			"Fix hide chat hidden by chats. - finally",
+			"Update 'Critical Education' mission hints. - DKK",
+			"Fix stakeouts not working. - finally",
+		],
+		"Changes": [
+			"Added sell points award and refill award trackers. - wootty2000",
+			"Added Shop to 'ignore max buy in bazaars' option. - Mephiles",
+			"Remove 'requires faction API access' description from Advanced OC option. - Mephiles",
+			"Improve entry script loading times. - DKK",
+			"Added item count to City Items value. - Mephiles",
+			"Allow stakeouts on hospital status. - finally",
+		],
+	},
+	"v5.1.2 - October, 1st. 2020": {
 		"Fixes": [
 			"Show right temporary total value. - DKK",
 			"Improve mobile checking on Firefox, fixing the loading issue. - DKK",

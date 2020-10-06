@@ -1,5 +1,4 @@
 console.log("START - Background Script");
-import personalized from "../personalized.js";
 
 // noinspection JSUnusedLocalSymbols
 let [seconds, minutes, hours, days] = [1000, 60 * 1000, 60 * 60 * 1000, 24 * 60 * 60 * 1000];
@@ -122,44 +121,6 @@ setup_storage.then(async success => {
 		return;
 	}
 
-	// Check for personalized scripts
-	console.log("Setting up personalized scripts.");
-	if (Object.keys(personalized).length !== 0) {
-		await (() => new Promise(resolve => {
-			ttStorage.get("userdata", userdata => {
-				if (!userdata)
-					return resolve(userdata);
-
-				let personalized_scripts = {};
-
-				if (personalized.master === userdata.player_id) {
-					for (let type in personalized) {
-						if (type === "master") {
-							continue;
-						}
-
-						for (let id in personalized[type]) {
-							for (let script of personalized[type][id]) {
-								personalized_scripts[script] = true;
-							}
-						}
-					}
-				} else if (personalized.users[userdata.player_id]) {
-					for (let script of personalized.users[userdata.player_id]) {
-						personalized_scripts[script] = true;
-					}
-				}
-
-				ttStorage.set({ personalized: personalized_scripts }, () => {
-					console.log("	Personalized scripts set.");
-					return resolve(true);
-				});
-			});
-		}))();
-	} else {
-		console.log("	Empty file.");
-	}
-
 	ttStorage.get(null, async db => {
 		userdata = db.userdata;
 		torndata = db.torndata;
@@ -173,7 +134,6 @@ setup_storage.then(async success => {
 		loot_times = db.loot_times;
 		target_list = db.target_list;
 		vault = db.vault;
-		// personalized = DB.personalized;
 		mass_messages = db.mass_messages;
 		custom_links = db.custom_links;
 		loot_alerts = db.loot_alerts;
@@ -261,7 +221,7 @@ function Main_30_seconds() {
 
 			// Userdata - essential
 			console.log("Fetching userdata - essential");
-			oldUserdata = await updateUserdata_essential(oldUserdata, oldTargetList);
+			oldUserdata = await updateUserdata_essential(oldUserdata, oldTargetList, settings);
 
 			// Userdata - basic
 			console.log("Fetching userdata - basic");
@@ -622,13 +582,72 @@ function updateOCinfo() {
 	});
 }
 
-function updateUserdata_essential(oldUserdata, oldTargetList) {
+function updateUserdata_essential(oldUserdata, oldTargetList, settings) {
 	return new Promise(resolve => {
 		const selections = `profile,travel,bars,cooldowns,money,events,messages,timestamp`;
 
 		fetchApi_v2("torn", { section: "user", selections: selections })
 			.then(async userdata => {
 				let shouldFetchAttackData = true;
+
+				// Generate icon with bars
+				if (!settings.icon_bars.show) {
+					chrome.browserAction.setIcon({ path: "images/icon128.png" });
+				} else {
+					let numBars = 0;
+					if (settings.icon_bars.energy) numBars++;
+					if (settings.icon_bars.nerve) numBars++;
+					if (settings.icon_bars.happy) numBars++;
+					if (settings.icon_bars.life) numBars++;
+					if (settings.icon_bars.chain && userdata.chain && userdata.chain.current > 0) numBars++;
+					if (settings.icon_bars.travel && userdata.travel && userdata.travel.time_left > 0) numBars++;
+
+					let canvas = document.createElement("canvas");
+					canvas.width = 128;
+					canvas.height = 128;
+
+					let canvasContext = canvas.getContext("2d");
+					canvasContext.fillStyle = "#fff";
+					canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+					let padding = 10;
+
+					let barHeight = (canvas.height - ((numBars + 1) * 10)) / numBars;
+					let barWidth = canvas.width - (padding * 2);
+
+					let barColors = {
+						"energy": "#0ac20a",
+						"nerve": "#c20a0a",
+						"happy": "#c2b60a",
+						"life": "#0060ff",
+						"chain": "#0ac2b2",
+						"travel": "#8b0ac2",
+					};
+
+					let y = padding;
+
+					Object.keys(barColors).forEach((key) => {
+						if (!settings.icon_bars[key] || !userdata[key]) return;
+						if (key === "chain" && userdata.chain.current === 0) return;
+
+						let width = 0;
+						if (key === "travel") {
+							let totalTrip = (userdata[key].timestamp - userdata[key].departed);
+							width = barWidth * ((totalTrip - userdata[key].time_left) / totalTrip);
+						} else {
+							width = barWidth * (userdata[key].current / userdata[key].maximum);
+						}
+
+						width = Math.min(width, barWidth);
+
+						canvasContext.fillStyle = barColors[key];
+						canvasContext.fillRect(padding, y, width, barHeight);
+
+						y += barHeight + padding;
+					});
+
+					chrome.browserAction.setIcon({ imageData: canvasContext.getImageData(0, 0, canvas.width, canvas.height) });
+				}
 
 				// Check for new messages
 				let message_count = 0;
@@ -854,7 +873,7 @@ function updateUserdata_essential(oldUserdata, oldTargetList) {
 							let real_timeout = userdata.chain.timeout * 1000 - (new Date() - new Date(userdata.timestamp * 1000));  // ms
 							const chain_count = userdata.chain.current;
 
-							if (real_timeout <= parseFloat(checkpoint) * 60 * 1000 && !notifications.chain[`${chain_count}_${checkpoint}`]) {
+							if (real_timeout <= parseFloat(checkpoint) * 1000 && !notifications.chain[`${chain_count}_${checkpoint}`]) {
 								notifications.chain[`${chain_count}_${checkpoint}`] = {
 									checkpoint: checkpoint,
 									title: "TornTools - Chain",
@@ -1008,7 +1027,7 @@ function updateStakeouts(oldStakeouts) {
 								});
 							});
 
-							if (oldStakeouts[user_id].online) {
+							if (oldStakeouts[user_id].notifications.online) {
 								if (stakeout_info.last_action.status === "Online" && !notifications.stakeouts[user_id + "_online"]) {
 									console.log("	Adding [online] notification to notifications.");
 									notifications.stakeouts[user_id + "_online"] = {
@@ -1022,7 +1041,7 @@ function updateStakeouts(oldStakeouts) {
 									delete notifications.stakeouts[user_id + "_online"];
 								}
 							}
-							if (oldStakeouts[user_id].okay) {
+							if (oldStakeouts[user_id].notifications.okay) {
 								if (stakeout_info.status.state === "Okay" && !notifications.stakeouts[user_id + "_okay"]) {
 									console.log("	Adding [okay] notification to notifications.");
 									notifications.stakeouts[user_id + "_okay"] = {
@@ -1036,7 +1055,7 @@ function updateStakeouts(oldStakeouts) {
 									delete notifications.stakeouts[user_id + "_okay"];
 								}
 							}
-							if (oldStakeouts[user_id].lands) {
+							if (oldStakeouts[user_id].notifications.lands) {
 								if (stakeout_info.status.state !== "Traveling" && !notifications.stakeouts[user_id + "_lands"]) {
 									console.log("	Adding [lands] notification to notifications.");
 									notifications.stakeouts[user_id + "_lands"] = {
@@ -1048,6 +1067,20 @@ function updateStakeouts(oldStakeouts) {
 									};
 								} else if (stakeout_info.status.state === "Traveling") {
 									delete notifications.stakeouts[user_id + "_lands"];
+								}
+							}
+							if (oldStakeouts[user_id].notifications.hospital) {
+								if (stakeout_info.status.state === "Hospital" && !notifications.stakeouts[user_id + "_hospital"]) {
+									console.log("	Adding [hospital] notification to notifications.");
+									notifications.stakeouts[user_id + "_hospital"] = {
+										title: `TornTools - Stakeouts`,
+										text: `${stakeout_info.name} is now in Hospital`,
+										url: `https://www.torn.com/profiles.php?XID=${user_id}`,
+										seen: 0,
+										date: new Date(),
+									};
+								} else if (stakeout_info.status.state !== "Hospital") {
+									delete notifications.stakeouts[user_id + "_hospital"];
 								}
 							}
 
