@@ -140,8 +140,24 @@
                         <div class="option" id="global-autocomplete_chat">
                             <input type="checkbox">Enable username auto-complete in chatboxes
                         </div>
+                        <div class="option" id="global-show_toggle_chat">
+                            <input type="checkbox">Show the "Toggle Chat" button <span class="new">New!</span>
+                        </div>
                         <div class="option" id="global-block_zalgo">
                             <input type="checkbox">Block Zalgo in chat <span class="new">New!</span>
+                            <div class="tabbed note">
+                                Zalgo - corrupted text that also changes other messages.
+                                Example: ǎ̸͖̙̖̥̯̳͕̋͐̃͂̽s̵̢̰̘̳͕̥̆ͅd̴́̊̚͜͝͠
+                            </div>
+                        </div>
+                        <div class="option" id="global-enable_central_revive">
+                            <input type="checkbox">
+                            Enable Nuke Central Hospital Revive script
+                            <span class="new">New!</span>
+                            <div class="tabbed note red">
+                                Revives cost $1m or 1 Xanax.
+                                Requests will go straight to Nuclear Central Hospital's Discord server.
+                            </div>
                         </div>
                         <div class="option" id="global-miniprofile_last_action">
                             <input id="inputGlobalMiniprofileLastAction" type="checkbox">
@@ -192,10 +208,10 @@
                             </label>
                         </div>
 
-                        <div class="heading">Icons</div>
+                        <div class="heading">Hide Icons</div>
                         <div id="icons"></div>
 
-                        <div class="heading" style="margin-bottom: 5px;">Areas</div>
+                        <div class="heading" style="margin-bottom: 5px;">Hide Areas</div>
                         <div id="areas">
                             <span name='Home'>Home</span>
                             <span name='Items'>Items</span>
@@ -256,13 +272,31 @@
                     </div>
                     <div class="section notifications" name="notifications">
                         <div class="heading">Notification Preferences</div>
+                        <div class="option" id="notifications_sound">
+                            Sound effect when receiving a notification:
+                            <select id="notifications_sound-type">
+                                <option value="-1">Mute</option>
+                                <option value="0">OS default</option>
+                                <option value="1">Sound 1</option>
+                                <option value="2">Sound 2</option>
+                                <option value="3">Sound 3</option>
+                                <option value="4">Sound 4</option>
+                                <option value="5">Sound 5</option>
+                                <option value="custom">Custom</option>
+                            </select>
+                            <input type="range" min="1" max="100" value="100" id="notifications_sound-volume">
+                            <i id="notifications_sound-play" class="fas fa-play"></i>
+                            <i id="notifications_sound-stop" class="fas fa-stop"></i>
+                            <br>
+                            <input accept=".mp3,.ogg,.wav" id="notifications_sound-upload" style="display: none;"
+                                   type="file">
+                        </div>
+                        <div class="tabbed note">
+                            (Mute only works in Chrome, OS default might not work in all browsers)
+                        </div>
                         <div class="option" id="notifications_tts">
                             <input type="checkbox">Read notifications using Text-To-Speech
                         </div>
-                        <div class="option" id="notifications_sound">
-                            <input type="checkbox">Play sound effect when receiving a notification
-                        </div>
-                        <div class="tabbed note">(option works for Chrome only)</div>
                         <div class="option" id="notifications_link">
                             <input type="checkbox">Open the corresponding link when clicking on a notification
                             (turning it off will dismiss the notification)
@@ -607,7 +641,7 @@
                             <input type="checkbox">Ignore the cash on hand for max buy in bazaars & shops.
                         </div>
                         <div class="option" id="itemmarket-market_value">
-                            Hightlight when an item is <input max="100" min="0" type="number">%
+                            Highlight when an item is over <input max="100" min="0" type="number">%
                             cheaper on the market than it's value.
                         </div>
 

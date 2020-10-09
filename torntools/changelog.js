@@ -3,6 +3,7 @@ export default {
 		"Features": [
 			"Auto-complete usernames in chat. - finally",
 			"Show bars in the icon. - finally",
+			"Add revive option for Nuclear Central Hospital. - Mephiles",
 		],
 		"Fixes": [
 			"Properly display item values for weapons and other single items. - DKK",
@@ -11,6 +12,7 @@ export default {
 			"Fix hide chat hidden by chats. - finally",
 			"Update 'Critical Education' mission hints. - DKK",
 			"Fix stakeouts not working. - finally",
+			"Fix travel profit calculation while flying. - finally",
 		],
 		"Changes": [
 			"Added sell points award and refill award trackers. - wootty2000",
@@ -19,6 +21,9 @@ export default {
 			"Improve entry script loading times. - DKK",
 			"Added item count to City Items value. - Mephiles",
 			"Allow stakeouts on hospital status. - finally",
+			"Change the notification system. - finally",
+			"Make notifications work in the background. - DKK",
+			"Added a setting to hide the 'Toggle Chat' button. - smikula",
 		],
 	},
 	"v5.1.2 - October, 1st. 2020": {
