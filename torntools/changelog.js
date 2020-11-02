@@ -1,5 +1,30 @@
 export default {
-	"v5.2.1 - October, 1xth. 2020": {
+	"v5.3.1 November, 2nd. 2020": {
+		Features: [],
+		Fixes: [
+			"Fix Achievement check by including medals/honors. - finally",
+			"Fix 'Three-peat' mission hint. - smikula",
+			"Fix loading issues on the russian roulette and calendar pages. - DKK",
+			"Fix 'Frenzy' and 'A Thor Loser' mission hints. - DKK",
+			"Show correct stalemate count for achievements on the mission page. - DKK",
+			"Fix 'Tree Huggers' mission hint. - kontamusse",
+		],
+		Changes: [
+			"Make left align also work on the popout poker. - DKK",
+			"Remove travel map auto country select. - DKK",
+			"Switch to YATA's v1 loot API. - DKK",
+		],
+	},
+	"v5.3 - October, 16th. 2020": {
+		Features: ["Add popup mute button. - finally", "Add forum enhancements, hide posts/threads, copy post for discord. - finally"],
+		Fixes: [
+			"Fix item page crashing when the opening items too fast. - DKK",
+			"Fix rare condition where the database isn't loaded properly. - finally",
+			"Solve FontAwesome issues by switching to the CSS version again. - finally",
+		],
+		Changes: [],
+	},
+	"v5.2.1 - October, 13th. 2020": {
 		Fixes: [
 			"Fix level filter abroad. - finally",
 			"Fix item market market value highlight settings. - DKK",

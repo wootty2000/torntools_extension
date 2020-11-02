@@ -3,8 +3,9 @@ const doc = document;
 const DATABASE_STATUSES = {
 	NOT_INITIALIZED: 0,
 	LOADING: 1,
-	LOADED: 2,
-	ENTRY: 3,
+	LOADING_ENTRY: 2,
+	LOADED: 3,
+	ENTRY: 4,
 	FAILED: 99,
 };
 
@@ -52,12 +53,18 @@ Element.prototype.find = function (type) {
 function getPageStatus() {
 	return new Promise((resolve) => {
 		let checker = setInterval(function () {
-			let page_heading = doc.find("#skip-to-content, .title___2sbYr, .nonFullScreen .content-title h4");
+			let page_heading = doc.find("#skip-to-content, .title___2sbYr, .nonFullScreen .content-title h4, .title___2q0Ev");
 			let message = doc.find("div[role='main'] > .info-msg-cont");
 
 			// Page heading
 			if (page_heading) {
 				switch (page_heading.innerText) {
+					case "Russian Roulette":
+						if (doc.body.dataset.layout === "jail") {
+							resolve("blocked");
+							return clearInterval(checker);
+						}
+						break;
 					case "Please Validate":
 						resolve("captcha");
 						return clearInterval(checker);

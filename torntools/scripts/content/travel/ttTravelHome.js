@@ -81,7 +81,7 @@ requireDatabase().then(function () {
 		// Sort by country
 		sort(doc.find("#ttTravelTable .table"), 1, "text");
 
-		filterTable();
+		filterTable(false);
 
 		// Tab listeners
 		for (let tab of [...doc.findAll("#tab-menu4>.tabs>li:not(.clear)")]) {
@@ -259,7 +259,7 @@ function addLegend() {
 	// Filtering
 	for (let el of doc.findAll("#ttTravelTable .legend-content .row .radio-item input, #ttTravelTable .legend-content .row .checkbox-item input")) {
 		el.onclick = function () {
-			filterTable();
+			filterTable(true);
 			saveSettings();
 		};
 	}
@@ -489,7 +489,7 @@ function addRow(item, time, cost, travel_items) {
 	return row;
 }
 
-function filterTable() {
+function filterTable(manual) {
 	const country = doc.find("#ttTravelTable .legend-content .radio-item input[name='country']:checked").getAttribute("_type");
 	const item_types = [...doc.findAll("#ttTravelTable .legend-content .checkbox-item input[name='item']:checked")].map((x) => x.getAttribute("_type"));
 
@@ -498,8 +498,7 @@ function filterTable() {
 		item: 2,
 	};
 
-	// Switch destination on map
-	if (country !== "all") {
+	if (manual && country !== "all") {
 		let name = country.replace(/ /g, "-");
 		if (country === "cayman islands") name = "cayman";
 		if (country === "united kingdom") name = "uk";
@@ -578,14 +577,14 @@ function reloadTable() {
 		doc.find("#ttTravelTable .header-row i").remove();
 		sort(doc.find("#ttTravelTable .table"), 1, "text");
 
-		filterTable();
+		filterTable(false);
 	});
 }
 
 function updateTravelMarket() {
 	console.log("Updating Travel Market info.");
 	return new Promise((resolve) => {
-		fetchRelay("yata", { section: "bazaar/abroad/export" })
+		fetchRelay("yata__v0", { section: "bazaar/abroad/export" })
 			.then((result) => {
 				console.log("Travel market result", result);
 				result.date = new Date().toString();

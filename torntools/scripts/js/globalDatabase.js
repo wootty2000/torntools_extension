@@ -59,7 +59,8 @@ let userdata,
 	stock_alerts,
 	hide_areas,
 	travel_items,
-	notifications_custom;
+	notifications_custom,
+	yata;
 
 (async function () {
 	database_status = DATABASE_STATUSES.LOADING;
@@ -103,6 +104,7 @@ let userdata,
 		hide_areas = DB.hide_areas;
 		travel_items = DB.travel_items;
 		notifications_custom = DB.notifications_custom;
+		yata = DB.yata;
 
 		if (!api_key) {
 			database_status = DATABASE_STATUSES.FAILED;
@@ -110,7 +112,11 @@ let userdata,
 			return;
 		}
 
-		database_status = DATABASE_STATUSES.LOADED;
+		if (database_status === DATABASE_STATUSES.LOADING_ENTRY) {
+			database_status = DATABASE_STATUSES.ENTRY;
+		} else {
+			database_status = DATABASE_STATUSES.LOADED;
+		}
 	});
 })();
 
