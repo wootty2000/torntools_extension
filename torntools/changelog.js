@@ -1,6 +1,13 @@
 export default {
-	"v5.3.1 November, 2nd. 2020": {
-		Features: [],
+	"v5.3.2 - November, 6th. 2020": {
+		Fixes: [
+			"Break the travel table less often when flying back from a country with spaces. - Fogest",
+			"Don't include your api key to YATA's API. - DKK",
+			"Stop hammering YATA's API when a YATA error occurred. - DKK",
+		],
+		Changes: ["Switch to YATA's v1 abroad API. - Fogest"],
+	},
+	"v5.3.1 - November, 2nd. 2020": {
 		Fixes: [
 			"Fix Achievement check by including medals/honors. - finally",
 			"Fix 'Three-peat' mission hint. - smikula",
